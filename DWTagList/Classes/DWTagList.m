@@ -31,12 +31,14 @@
 
 @synthesize view, textArray;
 @synthesize delegate = _delegate;
+@synthesize selectionColor;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         [self addSubview:view];
+        self.selectionColor = [UIColor colorWithRed:0.5 green:0.5 blue:1.0 alpha:1.0];
     }
     return self;
 }
@@ -54,14 +56,25 @@
     [self display];
 }
 
-- (void)touchedTag:(id)sender{
-    
+- (void)touchedTag:(id)sender {
     UITapGestureRecognizer *t = (UITapGestureRecognizer*)sender;
     UILabel *label = (UILabel*)t.view;
+    CGColorRef currentLabelBackgroundColor = label.layer.backgroundColor;
+    
+    // Must animate UILabel background color using hack
+    // http://stackoverflow.com/a/3762950/805882
+    [UIView animateWithDuration:0.1 animations:^{
+        label.layer.backgroundColor = selectionColor.CGColor;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [UIView animateWithDuration:0.1 animations:^{
+                label.layer.backgroundColor = currentLabelBackgroundColor;
+            }];
+        }
+    }];
     
     if(label && self.delegate && [self.delegate respondsToSelector:@selector(selectedTag:)])
         [self.delegate selectedTag:label.text];
-    
 }
 
 - (void)display
@@ -94,10 +107,11 @@
         previousFrame = label.frame;
         gotPreviousFrame = YES;
         [label setFont:[UIFont systemFontOfSize:FONT_SIZE]];
+        label.backgroundColor = [UIColor clearColor];
         if (!lblBackgroundColor) {
-            [label setBackgroundColor:BACKGROUND_COLOR];
+            label.layer.backgroundColor = BACKGROUND_COLOR.CGColor;
         } else {
-            [label setBackgroundColor:lblBackgroundColor];
+            label.layer.backgroundColor = lblBackgroundColor.CGColor;
         }
         [label setTextColor:TEXT_COLOR];
         [label setText:text];

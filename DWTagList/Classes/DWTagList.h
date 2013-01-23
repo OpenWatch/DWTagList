@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIView *view;
 @property (nonatomic, strong) NSArray *textArray;
 @property (nonatomic, strong) id<DWTagListDelegate> delegate;
+@property (nonatomic, strong) UIColor *selectionColor;
 
 - (void)setLabelBackgroundColor:(UIColor *)color;
 - (void)setTags:(NSArray *)array;
