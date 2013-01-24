@@ -8,11 +8,8 @@
 #import <UIKit/UIKit.h>
 
 @protocol DWTagListDelegate <NSObject>
-
 @required
-
-- (void)selectedTag:(NSString*)tagName;
-
+- (void)selectedTagName:(NSString*)tagName atIndex:(NSUInteger)index;
 @end
 
 @interface DWTagList : UIView

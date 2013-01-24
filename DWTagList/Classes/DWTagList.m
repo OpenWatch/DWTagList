@@ -73,8 +73,9 @@
         }
     }];
     
-    if(label && self.delegate && [self.delegate respondsToSelector:@selector(selectedTag:)])
-        [self.delegate selectedTag:label.text];
+    if(label && self.delegate && [self.delegate respondsToSelector:@selector(selectedTagName:atIndex:)]) {
+        [self.delegate selectedTagName:label.text atIndex:label.tag];
+    }
 }
 
 - (void)display
@@ -85,6 +86,7 @@
     float totalHeight = 0;
     CGRect previousFrame = CGRectZero;
     BOOL gotPreviousFrame = NO;
+    int tagNumber = 0;
     for (NSString *text in textArray) {
         CGSize textSize = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:CGSizeMake(self.frame.size.width, 1500) lineBreakMode:NSLineBreakByWordWrapping];
         textSize.width += HORIZONTAL_PADDING*2;
@@ -129,6 +131,8 @@
         [label setUserInteractionEnabled:YES];
         [label addGestureRecognizer:gesture];
         
+        label.tag = tagNumber;
+        tagNumber++;
         [self addSubview:label];
     }
     sizeFit = CGSizeMake(self.frame.size.width, totalHeight + 1.0f);
