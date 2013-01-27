@@ -135,7 +135,13 @@
         tagNumber++;
         [self addSubview:label];
     }
-    sizeFit = CGSizeMake(self.frame.size.width, totalHeight + 1.0f);
+    sizeFit = CGSizeMake(self.frame.size.width, totalHeight + 8.0f);
+    //self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, sizeFit.width, sizeFit.height);
+    //[self logFrame:self.frame];
+}
+
+- (void) logFrame:(CGRect)frame {
+    NSLog(@"frame: (%f, %f, %f, %f)", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (CGSize)fittedSize
